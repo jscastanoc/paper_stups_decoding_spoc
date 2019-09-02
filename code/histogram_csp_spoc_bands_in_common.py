@@ -93,7 +93,7 @@ for session in sessions:
         if not DEBUG:
             plotter = stups.experiments.plotting.explorer.PlotCopyDraw(c_exp, exp_id,
                                                                        constraints = {'meta-session':session,
-                                                                      constraint:[-np.inf,0.05]})
+                                                                      constraint:[-np.inf,0.02]})
             df_all_experiments.append(plotter.df_filter)
         df = df_all_experiments[ix]#
         df['freq_binned'] = pd.cut(df['parameters-fc'], freq_bins)
