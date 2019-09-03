@@ -99,14 +99,21 @@ for session in sessions:
         if not DEBUG:
             plotter = stups.experiments.plotting.explorer.PlotCopyDraw(c_exp, exp_id,
                                                                            constraints = {'meta-session':session,
-                                                                          constraint:[-np.inf,0.05]}) 
+                                                                          constraint:[-np.inf,0.02]},
+                                                                          preload=False)
+            plotter.load_results(chance_level_keys=[c_exp_prop.metrics.chance_level])
+            ## FIX: IF THERE ARE TOO MANY CHANCE LEVELS BUT THE ONE THAT WE NEED,
+            # NO NEED TO LOAD EVERYTHING AGAIN :)
             all_plotters.append(plotter)        
         
+        # get chance level
+        df_all = all_plotters[ix].df_allres
+        
+        #key_chance_level = c_exp_prop.metrics.chance_level
+        #df_all['chance_level'] = all_plotters[ix].get_chance_level(list(df_all.index),key_chance_level)
         
         df = all_plotters[ix].df_filter
         
-        key_chance_level = c_exp_prop.metrics.chance_level
-        df['chance_level'] = all_plotters[ix].get_chance_level(list(df.index),key_chance_level)
         
         df['freq_binned'] = pd.cut(df['parameters-fc'], freq_bins)
         df['fc_bin_mean'] = np.array([ival.mid for ival in df['freq_binned']],dtype=int)#+x_offset
@@ -116,13 +123,17 @@ for session in sessions:
         df_size_per_fc = df.groupby('fc_bin_mean').size()
         
         
-        toggle_legend = 'full' if (ix==0 and with_legend) else False
+        toggle_legend = 'brief' if (ix==0 and with_legend) else False
         g = sns.scatterplot(x=x_positions, y=df_mean_per_fc[metric],
                         size=df_size_per_fc.values, size_norm=(1,45),
                         sizes=(2,150),
                         color=c_exp_prop.color, legend=toggle_legend)
         
-        c_ax.plot(x_positions,df_mean_per_fc['chance_level'], c=c_exp_prop.color)
+        df_all['freq_binned'] = pd.cut(df_all['parameters-fc'], freq_bins)
+        df_all['fc_bin_mean'] = np.array([ival.mid for ival in df_all['freq_binned']],dtype=int)
+        df_all.groupby('fc_bin_mean').mean()
+        x_positions_all=np.array(sorted([ival.mid for ival in df_all['freq_binned'].unique()]),dtype=int)
+        c_ax.plot(x_positions_all,df_all.groupby('fc_bin_mean').mean()[c_exp_prop.metrics.chance_level], c=c_exp_prop.color)
         c_ax.set_ylim(c_lim)
         c_ax.set_xticks(freq_bins[::2])
         c_ax.set_xticklabels(freq_bins[::2])
@@ -142,5 +153,5 @@ for session in sessions:
     #plt.close(fig)
     if DEBUG:
         break
-    False
+    #break
     

@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[10pt,a4paper, twocolumn]{article}
 %\usepackage[latin1]{inputenc}
 \usepackage{listings}
 \usepackage{amsmath}
@@ -7,9 +7,10 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{tikz}
-\usepackage[left=2.00cm, right=3.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+\usepackage[left=1.00cm, right=1.00cm, top=1.00cm, bottom=1.00cm]{geometry}
 \usepackage{bm}
 \usepackage[colorinlistoftodos]{todonotes}
+\usepackage{xspace}
 
 \definecolor{on_bckgrd}{HTML}{F6BCB2}
 \definecolor{off_bckgrd}{HTML}{A4D5EA}
@@ -19,9 +20,11 @@
 \providecommand{\mat}[1]{{\bm {#1}}}
 
 
-\newcommand{\cpd}[0]{\textit{copy-draw}}
-\newcommand{\cpdt}[0]{\textit{copy-draw}~test}
+\newcommand{\cpd}[0]{\textit{copy-draw}\xspace}
+\newcommand{\cpdt}[0]{\textit{copy-draw}~test\xspace}
 \newcommand{\patient}[2]{$S_{#1}^{#2}$}
+\newcommand{\regtask}{RegTask\xspace}
+\newcommand{\classtask}{ClassTask\xspace}
 
 %\title{Data-driven identification of acute and chronic cortical neural-markers for characterization of Parkinson's diseases symptoms}
 \title{Data-driven characterization of cortical neural markers in acute and chronic stages of DBS treatment for Parkinson's disease}
@@ -121,20 +124,17 @@ EEG signals were recorded from a variable number of the same passive Ag/AgCl ele
 
 DBS electrodes were connected the NeuoOmega system (AlphaOmega, Israel), were DBS was delivered according to each condition
 
-\begin{figure}[h!]
+\begin{figure*}[h!]
 \centering
 \includegraphics[width=0.8\textwidth]{figures/paradigm_layout}
 %\includegraphics[width=0.4\textwidth]{figures/electrode_layout}
 %\includegraphics[width=0.5\textwidth]{figures/paradigm}
 \caption{Right: Illustrative EEG layout used for one of the patients. Electrodes were placed over the entire scalp, avoiding incision sites used for DBS electrode implantation and externalization. Left: Experimental setup used during days D1-D3. Concurrent EEG+STN-LFP signals were recorded during copy-draw Execution.}
 \label{fig:paradigm_layout}
-\end{figure}
+\end{figure*}
 
 
 \section{Results}
-\def \allsessions {VPpcac_d2,VPpcac_d4,NEW,VPpcad_d2,VPpcad_d4,VPpcae_d4,NEW,VPpcaf_d2,
-	VPpcaf_d3,VPpcaf_d4,NEW,VPpcag_d2,VPpcag_d3,VPpcag_d4,NEW,VPpcah_d2,NEW,
-	VPpcaj_d2,VPpcaj_d3}
 
 \subsection{Modulation of motor-performance}
 Figure \ref{fig:behavioral_all} shows the $PL$ score achieved by the patients in all the sessions. Complex medication-stimulation interaction can be seen for many of the recordings. For example, in session P1-D2, DBS does not have an evident effect in motor performance at the beginning of the session, but after intake of dopaminergic medication, a clear difference between DBS ON and OFF may be observed
@@ -146,6 +146,15 @@ Figure \ref{fig:behavioral_all} shows the $PL$ score achieved by the patients in
 \subsection{Predictive cortical oscillatory components}
 \input{fig_decoding_perf_pearson.tex}
 
+Figure \ref{fig:decoding_performance_all} shows the decoding performance achieved for \regtask and  \classtask, evaluated in all sessions available. As baseline for the \regtask, we have included the decoding performance achieved by using the unsupervised method SSD. Additionally, the chance level for \regtask and  \classtask is shown as a solid line. The data-point size indicates the number of significant components found in the corresponding $f_c$. This can be interpreted as the  stability of a given frequency band as source of informative power-band features. The intuition behind this interpretation, is that a given component is able to deliver a consistently significant decoding performance, despite varying its $f_w$. An average of 45 different $f_w$ were computed for each of frequency bins shown.
+
+For all sessions, relevant band-power features were found for \regtask and  \classtask, with the exception of \patient{4}{1}, \patient{4}{2}, where only few spurious components where discovered. Additionally for \regtask, sessions  \patient{2}{c} and \patient{7}{c} did not contain any relevant band-power features. Inversely, for \patient{4}{c} it was possible to find relevant features for \regtask in the alpha- and lower beta-bands, but none for \classtask.
+ 
+For almost all sessions, frequency bands that are informative for \classtask, also derived in a good decoding accuracy for \regtask. Nevertheless a few exceptions are observed: For \patient{3}{c}, only theta-band features provided information for \classtask, whereas beta-band oscillations delivered significant decoding for \regtask. For \patient{5}{1}, informative features were found only in theta- lower beta-band for \classtask, whereas \regtask also profited from higher beta-band features. Higher frequency bands also delivered significant decoding performance for \regtask, but corresponded to components of muscular origin.
+
+In \patient{6}{1}, besides relevant alpha-band components for both \regtask and \classtask, higher frequency bands contributed to a great decoding accuracy for \classtask, but not for \regtask. However, such components informative for \classtask correspond to DBS-artifacts. Similarly, for \patient{6}{c}, theta- and alpha band components provided relevant formation for decoding in \regtask and  \classtask, besides the DBS-elicited artifacts in higher frequency bands.
+
+In \patient{7}{1}, alpha-band provided relevant formation for \regtask and \classtask, whereas higher beta-band was informative only for \classtask. Higher frequencies also provided discriminatory information for \classtask, however, they could be identified as of muscle-origin. For \patient{7}{2}, weakly predictive components for \regtask could be found in lower and higher beta-bands. For \classtask, relevant components could be found only in higher beta-band, followed by components of artifactual origin in higher frequency bands. For \patient{7}{c}, theta and lower beta components provided relevant information for \classtask. Higher frequency components also achieved good decoding performance for \classtask, but were of artifactual origin.
 
 \subsection{Spatio-temporal signatures}
 In the following, the spatio-temporal signatures of the significant components identified for the chronic sessions will be presented. We have excluded the acute sessions from this analysis since the incompleteness of the EEG layout precludes the interpretation of the spatial patterns obtained. Here, we refer to spatio-temporal signatures as the set of spatial patterns identified by SPoC, as well as the corresponding averaged ERD/ERS.
