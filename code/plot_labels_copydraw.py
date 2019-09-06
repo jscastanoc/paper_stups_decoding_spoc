@@ -36,6 +36,18 @@ available_sessions =['VPpcac_18_01_17',
              'VPpcaj_19_05_31',
              'VPpcaj_19_06_01',
              'VPpcaj_19_07_11']
+
+available_sessions =[
+             'VPpcaf_18_10_27',
+             'VPpcaf_18_11_22',
+             'VPpcag_19_01_11',
+             'VPpcag_19_01_12',
+             'VPpcag_19_02_28',
+             'VPpcah_19_04_17',
+             'VPpcah_19_05_17',
+             'VPpcaj_19_05_31',
+             'VPpcaj_19_06_01',
+             'VPpcaj_19_07_11']
 available_sessions.sort()
 
 for session in available_sessions:
@@ -48,5 +60,5 @@ for session in available_sessions:
     ax = plotter.plot_labels(session, type_plot='hist', plot_args=dict(ax = ax))
     ax.grid()
     f.savefig('figures/histogram_labels/histogram_labels_%s_%s.pdf' % (vp,session_cfg[date]['day']))
-    #ax.set_ylim([0,1])
-    #break
+    ax.set_ylim([0,1])
+    plt.close(f)
